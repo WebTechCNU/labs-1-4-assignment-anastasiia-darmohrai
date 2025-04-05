@@ -1,2 +1,9 @@
 [build]
-functions = "functions"
+  base = "dating-app"
+  publish = "dating-app/build"
+  command = "npm install && npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
