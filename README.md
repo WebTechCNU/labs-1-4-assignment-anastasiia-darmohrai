@@ -1,6 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Om1zqYVh)
 
-# Laboratory Assignment 1: REST API
+# Laboratory Assignment 1,3: REST API Authorization with JWT token
 
 ## Technologies Used
 
@@ -19,6 +19,10 @@
 ### Deployment:
 - **Netlify** - A platform for deploying frontend applications with continuous integration and deployment
 
+### Lab 3 extends the initial dating application by adding JWT-based authentication to secure user access and manage sessions.
+
+## Authorization feature:
+Register and log in, Receive a JWT token upon login, Access protected routes using the token
 
 This project consists of both a frontend and backend that are used to manage a dating application. The frontend is a React application, while the backend is a Spring Boot application that connects to MongoDB.
 
