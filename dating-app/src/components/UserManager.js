@@ -2,7 +2,7 @@
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function UserManagement() {
+export default function UserManager() {
     const [users, setUsers] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [form, setForm] = useState({ name: "", age: 18, religion: "", gender: "", location: "" });
@@ -15,7 +15,12 @@ export default function UserManagement() {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/users");
+            const token = localStorage.getItem("token");
+            const response = await axios.get("http://localhost:8080/api/users", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setUsers(response.data);
             setCurrentIndex(0);
         } catch (error) {
@@ -34,7 +39,12 @@ export default function UserManagement() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8080/api/users", form);
+            const token = localStorage.getItem("token");
+            await axios.post("http://localhost:8080/api/users", form, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setForm({ name: "", age: 18, religion: "", gender: "", location: "" });
             fetchUsers();
         } catch (error) {
@@ -42,10 +52,16 @@ export default function UserManagement() {
         }
     };
 
+
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:8080/api/users/${editForm.id}`, editForm);
+            const token = localStorage.getItem("token");
+            await axios.put(`http://localhost:8080/api/users/${editForm.id}`, editForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setShowModal(false);
             fetchUsers();
         } catch (error) {
@@ -61,16 +77,19 @@ export default function UserManagement() {
     const handleDelete = async (id) => {
         console.log("Deleting user with ID:", id);
         try {
+            const token = localStorage.getItem("token");
             const response = await axios.delete(`http://localhost:8080/api/users/${id}`, {
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
             });
             console.log("Delete response:", response);
-            fetchUsers(); 
+            fetchUsers();
         } catch (error) {
             console.error("Error deleting user:", error.response?.data || error.message);
         }
     };
-
 
     const handleNext = () => {
         if (users.length > 0) {
@@ -86,32 +105,6 @@ export default function UserManagement() {
 
     return (
         <div className="container py-4">
-            <h2 className="text-center mb-4">User Management</h2>
-
-            <div className="card p-4 mb-4">
-                <h4 className="mb-3">Create User</h4>
-                <form onSubmit={handleSubmit}>
-                    <div className="row g-3">
-                        <div className="col-md-6">
-                            <input type="text" className="form-control" name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
-                        </div>
-                        <div className="col-md-6">
-                            <input type="number" className="form-control" name="age" placeholder="Age" value={form.age} onChange={handleChange} required />
-                        </div>
-                        <div className="col-md-6">
-                            <input type="text" className="form-control" name="religion" placeholder="Religion" value={form.religion} onChange={handleChange} />
-                        </div>
-                        <div className="col-md-6">
-                            <input type="text" className="form-control" name="gender" placeholder="Gender" value={form.gender} onChange={handleChange} />
-                        </div>
-                        <div className="col-12">
-                            <input type="text" className="form-control" name="location" placeholder="Location" value={form.location} onChange={handleChange} />
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-primary mt-3 w-100">Create User</button>
-                </form>
-            </div>
-
             {users.length > 0 ? (
                 <div className="card p-4 shadow">
                     <div className="d-flex justify-content-between align-items-center mb-3">
